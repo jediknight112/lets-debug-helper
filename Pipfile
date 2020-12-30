@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+mock = "*"
+parameterized = "*"
+
+[dev-packages]
+setuptools = "*"
+pytest = "*"
+responses = "*"
+coverage = "*"
+flake8 = "*"
+requirements-parser = "*"
+
+[requires]
+python_version = "3"
