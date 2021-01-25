@@ -57,11 +57,11 @@
         },
         "parameterized": {
             "hashes": [
-                "sha256:190f8cc7230eee0b56b30d7f074fd4d165f7c45e6077582d0813c8557e738490",
-                "sha256:59ab908e31c01505a987a2be78854e19cb1630c047bbab7848169c371d614d56"
+                "sha256:41bbff37d6186430f77f900d777e5bb6a24928a1c46fb1de692f8b52b8833b5c",
+                "sha256:9cbb0b69a03e8695d68b3399a8a5825200976536fe1cb79db60ed6a4c8c9efe9"
             ],
             "index": "pypi",
-            "version": "==0.7.4"
+            "version": "==0.8.1"
         },
         "requests": {
             "hashes": [
@@ -239,11 +239,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:1969f797a1a0dbd8ccf0fecc80262312729afea9c17f1d70ebf85c5e76c6f7c8",
-                "sha256:66e419b1899bc27346cb2c993e12c5e5e8daba9073c1fbce33b9807abc95c306"
+                "sha256:9d1edf9e7d0b84d72ea3dbcdfd22b35fb543a5e8f2a60092dd578936bf63d7f9",
+                "sha256:b574b57423e818210672e07ca1fa90aaf194a4f63f3ab909a2c67ebb22913839"
             ],
             "index": "pypi",
-            "version": "==6.2.1"
+            "version": "==6.2.2"
         },
         "requests": {
             "hashes": [

@@ -64,7 +64,7 @@ def check_debug_test_status(test_id_url):
 
 
 def pre_result_output(domain, test_id, test_id_url):
-    print(Ctext.green('\nChecking Doamin:'), domain)
+    print(Ctext.green('\nChecking Domain:'), domain)
     print(Ctext.green('     Testing ID:'), test_id)
     print(Ctext.green('            URL:'), test_id_url)
 
