@@ -1,6 +1,6 @@
 argparse
 codecov
-python-coveralls
+coveralls
 coverage
 mock
 parameterized
