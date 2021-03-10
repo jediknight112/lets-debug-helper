@@ -3,7 +3,6 @@ import argparse
 import mock
 import json
 import unittest
-import sys
 
 from letsdebughelper import letsdebug
 
