@@ -5,10 +5,11 @@ python:
 before_install:
   - python --version
   - pip install -U pip
-  - pip install -U pytest
-  - pip install codecov
+  - pip install -r requirements.txt
 install:
   - pip install ".[test]" .
-script: pytest --verbose
+script: pipenv run pytest --verbose --color=yes
 after_success:
+  - pipenv run coverage run -m pytest --verbose --color=yes
+  - pipenv run coverage report -m --include="letsdebughelper/*"
   - codecov

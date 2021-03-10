@@ -1,0 +1,12 @@
+argparse
+codecov
+coverage
+mock
+parameterized
+pipenv
+pytest
+responses
+requests
+setuptools
+flake8
+requirements-parser
