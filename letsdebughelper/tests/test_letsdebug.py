@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import argparse
 import mock
 import json
 import unittest
+import sys
 
 from letsdebughelper import letsdebug
 
@@ -84,12 +86,9 @@ be enabled.", 'detail': 'https://support.cloudflare.com/hc/en-us/articles/200170
         actual = letsdebug.decode_result(result)
         self.assertEqual(actual, self.get_result_dict)
 
-    @mock.patch('requests.get')
-    def test_fail_decode_result(self, mock_get):
-        mock_resp = self._mock_response(text='Bad Data')
-        mock_get.return_value = mock_resp
-        actual = letsdebug.decode_result(mock_get.return_value)
-        self.assertIsNone(actual)
+    def test_fail_decode_result(self):
+        with self.assertRaises(SystemExit):
+            letsdebug.decode_result('Bad Data')
 
     @mock.patch('requests.get')
     def test_success_check_status(self, mock_get):
@@ -106,3 +105,16 @@ be enabled.", 'detail': 'https://support.cloudflare.com/hc/en-us/articles/200170
         result = letsdebug.le_get_call(self.bad_post_data)
         with self.assertRaises(SystemExit):
             letsdebug.check_status(result, self.get_bad_result)
+
+    @mock.patch('argparse.ArgumentParser.parse_args')
+    def test_parse_args(self, mock_args):
+        mock_args.return_value = argparse.Namespace(domain='jeditest.com')
+        expected = {'domain': 'jeditest.com'}
+        actual = letsdebug.parse_args()
+        actual_dict = vars(actual)
+        self.assertEqual(actual_dict, expected)
+
+    def test_parse_args_none(self):
+        with mock.patch.object(sys, 'argv', [' ']):
+            with self.assertRaises(SystemExit):
+                letsdebug.parse_args()

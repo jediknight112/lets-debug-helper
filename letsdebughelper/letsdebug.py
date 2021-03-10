@@ -45,7 +45,6 @@ def decode_result(result):
     try:
         return result.json()
     except Exception as e:
-        print(result.text())
         print("Couldn't decode the response as JSON:", e)
         sys.exit()
 
