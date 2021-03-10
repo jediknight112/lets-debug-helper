@@ -114,7 +114,9 @@ be enabled.", 'detail': 'https://support.cloudflare.com/hc/en-us/articles/200170
         actual_dict = vars(actual)
         self.assertEqual(actual_dict, expected)
 
-    def test_parse_args_none(self):
-        with mock.patch.object(sys, 'argv', [' ']):
+    @mock.patch('argparse.ArgumentParser.parse_args')
+    def test_parse_args_none(self, mock_args):
+        mock_args.return_value = argparse.Namespace()
+        with mock.patch('argparse._sys.argv', ['letsdebug.py']):
             with self.assertRaises(SystemExit):
                 letsdebug.parse_args()
