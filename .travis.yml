@@ -9,7 +9,6 @@ install:
   - pip install -r requirements.txt
 script:
   - pipenv run flake8 --verbose
-  - pipenv run pytest --verbose --color=yes
   - pipenv run coverage run --include="letsdebughelper/*" --omit="/" -m pytest --verbose --color=yes
 after_success:
   - pipenv run coverage report -m --include="letsdebughelper/*"
