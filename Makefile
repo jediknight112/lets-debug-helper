@@ -40,7 +40,7 @@ test:
 
 .PHONY: coverage
 coverage:
-	pipenv run coverage run -m pytest --verbose --color=yes
+	pipenv run coverage run -m --include="letsdebughelper/*" --omit="/" pytest --verbose --color=yes
 	pipenv run coverage report -m --include="letsdebughelper/*"
 
 .PHONY: package
