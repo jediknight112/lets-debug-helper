@@ -1,3 +1,4 @@
+[![CI](https://github.com/jediknight112/lets-debug-helper/actions/workflows/main.yml/badge.svg)](https://github.com/jediknight112/lets-debug-helper/actions/workflows/main.yml)
 [![Build Status](https://travis-ci.com/jediknight112/lets-debug-helper.svg?branch=main)](https://travis-ci.com/jediknight112/lets-debug-helper)
 [![Coverage Status](https://coveralls.io/repos/github/jediknight112/lets-debug-helper/badge.svg?branch=main)](https://coveralls.io/github/jediknight112/lets-debug-helper?branch=main)
 # lets-debug-helper
