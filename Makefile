@@ -1,6 +1,6 @@
 MAJOR_VERSION = 1
 MINOR_VERSION = 0
-BUILD_NUMBER ?= 1
+BUILD_NUMBER ?= 6
 DOCKER_IMG ?= lets-debug:test
 artifacts = ./artifacts
 pkg_name = lets-debug-helper

@@ -16,7 +16,7 @@ with open('build/requirements.txt') as f:
             install_requires.append(full_line)
 
 setup(name="lets-debug-helper",
-      version="1.0.5",
+      version="1.0.6",
       author="Jeffrey Crane",
       author_email="jediknight11206@gmail.com",
       description="This is a cli tool that interacts with the Let's Debug API",
