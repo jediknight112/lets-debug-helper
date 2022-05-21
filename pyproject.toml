@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lets-debug-helper"
-version = "1.0.6"
+version = "1.0.7"
 description = "This is a cli tool that interacts with the Let's Debug API"
 authors = ["Jeffrey Crane <jediknight11206@gmail.com>"]
 license = "License :: OSI Approved :: MIT License"
