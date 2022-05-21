@@ -1,21 +1,50 @@
 FROM python:latest
 
+ARG YOUR_ENV
 SHELL [ "/bin/bash", "-c" ]
 
-RUN apt-get update && \
-    apt-get upgrade -y
+ENV YOUR_ENV=${YOUR_ENV} \
+  # python
+  PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PYTHONDONTWRITEBYTECODE=1 \
+  # Required to fix a UnicodeError in tests from the rich lib
+  PYTHONIOENCODING=utf-8 \
+  # pip:
+  PIP_NO_CACHE_DIR=1 \
+  PIP_DISABLE_PIP_VERSION_CHECK=1 \
+  PIP_DEFAULT_TIMEOUT=100 \
+  # poetry
+  POETRY_VERSION="1.1.13" \
+  POETRY_NO_INTERACTION=1 \
+  POETRY_VIRTUALENVS_CREATE=false \
+  #POETRY_VIRTUALENVS_PATH='/workspace/.poetry/' \
+  #POETRY_CACHE_DIR='/workspace/.poetry/cache/' \
+  POETRY_HOME='/usr/local' \
+  PATH="${PATH}:/usr/local" \
+  # other
+  LC_ALL=C.UTF-8 \
+  LANG=C.UTF-8
+
+RUN apt-get update && apt-get install -y \
+  curl \
+  python3-venv \
+  sudo \
+  && apt clean
 
 RUN apt-get purge -y --auto-remove && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir -U 'pip'
+RUN curl -sSL https://install.python-poetry.org | python3
 
 WORKDIR /workspace
 
-COPY requirements.txt /workspace
+WORKDIR /workspace
+COPY pyproject.toml /workspace
+COPY poetry.lock /workspace
+COPY .flake8 /workspace
 
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-ENV WORKON_HOME=~/.venvs
-
-ENV PIPENV_VENV_IN_PROJECT=true
+RUN echo "PATH IS ${PATH}"
+RUN poetry install --no-ansi --no-root

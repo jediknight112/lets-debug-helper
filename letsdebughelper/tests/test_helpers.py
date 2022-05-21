@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import argparse
-from parameterized import parameterized
 import unittest
+
+from parameterized import parameterized
 
 from letsdebughelper.helpers import ValidateArgRegex, Ctext
 

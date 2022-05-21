@@ -7,28 +7,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.9
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
 
-    - name: Install pipenv
-      run: pip install pipenv
+      - name: Install curl
+        run: pip install curl
 
-    - name: Build
-      run: make build
+      - name: Install poetry
+        run: curl -sSL https://install.python-poetry.org | python3
 
-    - name: Test and Coverage
-      run: make coverage
+      - name: Build
+        run: make build
 
-    - name: Package
-      run: make package
+      - name: Test and Coverage
+        run: make coverage
 
-    - name: Test Package Installation
-      run: pip install dist/*.whl
+      - name: Package
+        run: WHL_VERSION=prerelease make package
 
-    - name: Test Scripts
-      run: |
-        lets-debug --help
+      - name: Test Package Installation
+        run: pip install dist/*.whl
+
+      - name: Test Scripts
+        run: |
+          lets-debug --help

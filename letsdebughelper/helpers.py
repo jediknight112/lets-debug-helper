@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import re
+
 from six import add_metaclass
 
 
@@ -70,6 +71,7 @@ class Colorizer(object):
     Colorize text.
     You probably want to use Ctext instead of this.
     """
+
     def __init__(self, color):
         self.color = color
 

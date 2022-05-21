@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import argparse
 import json
-import requests
 import sys
 import textwrap
 from time import sleep
 
-from letsdebughelper.helpers import ValidateArgRegex, Ctext
+import requests
 
+from letsdebughelper.helpers import ValidateArgRegex, Ctext
 
 LE_API_URL = 'https://letsdebug.net'
 

@@ -1,12 +1,8 @@
-MAJOR_VERSION = 1
-MINOR_VERSION = 0
-BUILD_NUMBER ?= 6
+WHL_VERSION ?= patch
 DOCKER_IMG ?= lets-debug:test
 artifacts = ./artifacts
 pkg_name = lets-debug-helper
 docker_workdir = /workspace
-
-VERSION := $(MAJOR_VERSION).$(MINOR_VERSION).$(BUILD_NUMBER)
 
 # this is kinda goofy...  ensure relevant things run in a docker.
 docker_run := docker run -t --rm -v $$PWD:$(docker_workdir) $(DOCKER_IMG)
@@ -20,12 +16,14 @@ endif
 .PHONY: all
 all: build test shell
 
+.PHONY: build
+build: check-env clean lint
+
 .PHONY: clean
 clean:
 	@echo Cleaning environment ...
 	# may not be a venv to remove, but just keep going in that case
-	pipenv --rm || true
-	rm -rf *.egg-info build dist .coverage Pipfile.lock
+	rm -rf *.egg-info build dist .coverage
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '.pytest_cache' -exec rm -rf {} +
@@ -38,104 +36,71 @@ check-env:
 
 .PHONY: setup
 setup:
-	pipenv update --dev
+	poetry install
+	poetry update
 
 .PHONY: lint
 lint: setup
-	pipenv run flake8 --verbose
-
-.PHONY: build
-build: check-env clean lint
+	poetry run flake8 --verbose
 
 .PHONY: test
 test:
-	pipenv run pytest --verbose --color=yes
+	poetry run pytest --verbose --color=yes
 
 .PHONY: coverage
 coverage:
-	pipenv run coverage run -m --include="letsdebughelper/*" --omit="/" pytest --verbose --color=yes
-	pipenv run coverage report -m --include="letsdebughelper/*"
+	poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes
+
+.PHONY: bump_py_version
+bump_py_version:
+	poetry version $(WHL_VERSION)
 
 .PHONY: package
-package: clean setup
+package: clean bump_py_version
 	@echo Packaging application ...
-	@echo Version: $(VERSION)
-	mkdir -p build
-	pipenv lock -r > build/requirements.txt
-	VERSION=$(VERSION) \
-		pipenv run python setup.py bdist_wheel
+	poetry build
 
-.PHONY: isolated
-isolated:
-	docker run \
-		--rm \
-		--tty \
-		--volume $(shell pwd):/work:rw \
-		--workdir /work \
-	 	python:3.8 \
-		/bin/bash -c "set -x && \
-			pip install --upgrade pip && \
-			pip install pipenv==2018.11.26 && \
-			pipenv update --dev && \
-			pipenv run flake8 --verbose && \
-			pipenv run pytest --verbose --color=yes -p no:cacheprovider && \
-			mkdir -p build && \
-			pipenv lock -r > build/requirements.txt && \
-			VERSION=$(VERSION) pipenv run python setup.py bdist_wheel"
+.PHONY: docker_all
+all: docker_build docker_check_env docker_lint docker_test
 
-.PHONY: shell
-shell:
-	PYTHONPATH=$(shell pwd) pipenv shell
-
-.PHONY: docker-all
-all: docker-build docker-test
-
+.PHONY: docker_build
 docker_build:  ## build docker image
 ifeq ($(IS_DOCKER),0)
 	docker build -t $(DOCKER_IMG) .
 endif
 
-.PHONY: docker-clean
-docker-clean:
+.PHONY: docker_check_env
+docker_check_env:
+	@echo Checking environment ...
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry --version
+
+.PHONY: docker_setup
+docker_setup:
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry update
+
+.PHONY: docker_lint
+docker_lint: docker_setup
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run flake8 --verbose
+
+.PHONY: docker_test
+docker_test:
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run pytest --verbose --color=yes letsdebughelper
+
+.PHONY: docker_coverage
+docker_coverage:
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes
+
+.PHONY: docker_package
+docker_package: docker_clean docker_setup
+	@echo Packaging application ...
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry build
+
+.PHONY: docker_clean
+docker_clean:
 	@echo Cleaning environment ...
 	# may not be a venv to remove, but just keep going in that case
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv --rm || true
-	rm -rf *.egg-info build dist .coverage Pipfile.lock
+	rm -rf *.egg-info build dist .coverage
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '.pytest_cache' -exec rm -rf {} +
 	find . -name '__pycache__' -exec rm -rf {} +
-
-.PHONY: docker-check-env
-docker-check-env:
-	@echo Checking environment ...
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv --version
-
-.PHONY: docker-setup
-docker-setup:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv update --dev
-
-.PHONY: docker-lint
-docker-lint: docker-setup
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv run flake8 --verbose
-
-.PHONY: docker-build
-docker-build: docker-check-env docker-clean docker-lint
-
-.PHONY: docker-test
-docker-test:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv run pytest --verbose --color=yes
-
-.PHONY: docker-coverage
-docker-coverage:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv run coverage run -m --include="letsdebughelper/*" --omit="/" pytest --verbose --color=yes
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv run coverage report -m --include="letsdebughelper/*"
-
-.PHONY: docker-package
-docker-package: docker-clean docker-setup
-	@echo Packaging application ...
-	@echo Version: $(VERSION)
-	mkdir -p build
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv lock -r > build/requirements.txt
-	VERSION=$(VERSION) \
-		docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) pipenv run python setup.py bdist_wheel

@@ -1,7 +1,7 @@
-from setuptools import setup
-import requirements
 from os import path
 
+import requirements
+from setuptools import setup
 
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
@@ -15,7 +15,7 @@ with open('build/requirements.txt') as f:
             full_line = name + ''.join([''.join(list(spec)) for spec in req.specs])
             install_requires.append(full_line)
 
-setup(name="lets-debug-helper",
+setup(name="letsdebughelper",
       version="1.0.6",
       author="Jeffrey Crane",
       author_email="jediknight11206@gmail.com",
