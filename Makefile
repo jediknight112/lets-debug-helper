@@ -32,7 +32,7 @@ clean:
 .PHONY: check-env
 check-env:
 	@echo Checking environment ...
-	pipenv --version
+	poetry version
 
 .PHONY: setup
 setup:
