@@ -95,7 +95,7 @@ docker_bump_py_version:
 	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry version $(WHL_VERSION)
 
 .PHONY: docker_package
-docker_package: docker_clean docker_setup
+docker_package: docker_bump_py_version
 	@echo Packaging application ...
 	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry build
 
