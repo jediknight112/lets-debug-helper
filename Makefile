@@ -90,6 +90,10 @@ docker_test:
 docker_coverage:
 	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes
 
+.PHONY: docker_bump_py_version
+docker_bump_py_version:
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry version $(WHL_VERSION)
+
 .PHONY: docker_package
 docker_package: docker_clean docker_setup
 	@echo Packaging application ...

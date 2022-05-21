@@ -9,29 +9,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
+      - name: Build docker
+        run: make docker_build
 
-      - name: Install curl
-        run: sudo apt-get update && sudo apt-get install -y curl
+      - name: Check Env
+        run: make docker_check_env
 
-      - name: Install poetry
-        run: curl -sSL https://install.python-poetry.org | python3
-
-      - name: Build
-        run: make build
+      - name: Lint
+        run: make docker_lint
 
       - name: Test and Coverage
-        run: make coverage
+        run: make docker_coverage
 
       - name: Package
-        run: WHL_VERSION=prerelease make package
+        run: WHL_VERSION=prerelease make docker_package
 
       - name: Test Package Installation
-        run: pip install dist/*.whl
+        run: pip3 install dist/*.whl
 
       - name: Test Scripts
         run: |
-          ls -la /usr/local/bin/
+          lets-debug --help
