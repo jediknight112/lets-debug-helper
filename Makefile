@@ -11,7 +11,7 @@ endif
 .PHONY: check_env
 check_env:
 	@echo Checking environment ...
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry --version
+	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry version
 
 .PHONY: setup
 setup:
