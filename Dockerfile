@@ -29,6 +29,8 @@ ENV YOUR_ENV=${YOUR_ENV} \
 
 RUN apt-get update && apt-get install -y \
   curl \
+  python3-dev \
+  python3-pip \
   python3-venv \
   sudo \
   && apt clean
