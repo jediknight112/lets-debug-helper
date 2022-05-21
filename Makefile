@@ -4,9 +4,7 @@ docker_workdir = /workspace
 
 .PHONY: docker_build
 docker_build:  ## build docker image
-ifeq ($(IS_DOCKER),0)
 	docker build -t $(DOCKER_IMG) .
-endif
 
 .PHONY: check_env
 check_env:
