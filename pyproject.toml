@@ -10,7 +10,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-alog = "letsdebughelper.letsdebug:main"
+lets-debug = "letsdebughelper.letsdebug:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
