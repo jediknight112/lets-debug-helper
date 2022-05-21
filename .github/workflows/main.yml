@@ -34,4 +34,4 @@ jobs:
 
       - name: Test Scripts
         run: |
-          lets-debug --help
+          pip3 list && 
