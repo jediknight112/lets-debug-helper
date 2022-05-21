@@ -1,4 +1,4 @@
-FROM python:latest
+FROM ubuntu:latest
 
 ARG YOUR_ENV
 SHELL [ "/bin/bash", "-c" ]
@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
   python3-pip \
   python3-venv \
   sudo \
-  && apt clean
+  && apt-get clean
 
 RUN apt-get purge -y --auto-remove && \
     rm -rf /var/lib/apt/lists/*
@@ -42,11 +42,8 @@ RUN pip3 install --no-cache-dir -U 'pip'
 RUN curl -sSL https://install.python-poetry.org | python3
 
 WORKDIR /workspace
-
-WORKDIR /workspace
 COPY pyproject.toml /workspace
 COPY poetry.lock /workspace
 COPY .flake8 /workspace
 
-RUN echo "PATH IS ${PATH}"
 RUN poetry install --no-ansi --no-root
