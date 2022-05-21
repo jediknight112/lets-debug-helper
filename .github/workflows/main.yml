@@ -34,4 +34,4 @@ jobs:
 
       - name: Test Scripts
         run: |
-          pip3 list && 
+          ls -la /usr/local/bin/
