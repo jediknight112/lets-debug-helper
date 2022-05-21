@@ -13,16 +13,16 @@ jobs:
         run: make docker_build
 
       - name: Check Env
-        run: make docker_check_env
+        run: make check_env
 
       - name: Lint
-        run: make docker_lint
+        run: make lint
 
       - name: Test and Coverage
-        run: make docker_coverage
+        run: make coverage
 
       - name: Package
-        run: WHL_VERSION=prerelease make docker_package
+        run: WHL_VERSION=prerelease make package
 
       - name: Test Package Installation
         run: pip3 install dist/*.whl
