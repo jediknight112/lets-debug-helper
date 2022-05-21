@@ -9,6 +9,9 @@ packages = [
     { include = "letsdebughelper" },
 ]
 
+[tool.poetry.scripts]
+alog = "letsdebughelper.letsdebug:main"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 argparse = "^1.4.0"
