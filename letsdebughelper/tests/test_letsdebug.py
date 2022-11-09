@@ -26,19 +26,28 @@ domain jeffistotallyawesome.space is being served through Cloudflare CDN. Any Le
 on the origin server will only encrypt traffic between the server and Cloudflare. It is strongly recommended that \
 the SSL option \'Full SSL (strict)\' be enabled.","detail":"https://support.cloudflare.com/hc/en-us/articles/\
 200170416-What-do-the-SSL-options-mean-","severity":"Warning"}]}}\n'
-        self.get_result_dict = {'id': 359646,
-                                'domain': 'jeffistotallyawesome.space',
-                                'method': 'http-01',
-                                'status': 'Complete',
-                                'created_at': '2020-11-16T20:39:19.970198Z',
-                                'started_at': '2020-11-16T20:39:19.973775Z',
-                                'completed_at': '2020-11-16T20:39:22.855617Z',
-                                'result': {'problems': [{'name': 'CloudflareCDN',
-                                                         'explanation': "The domain jeffistotallyawesome.space is being \
+
+        self.get_result_dict = {
+            'id': 359646,
+            'domain': 'jeffistotallyawesome.space',
+            'method': 'http-01',
+            'status': 'Complete',
+            'created_at': '2020-11-16T20:39:19.970198Z',
+            'started_at': '2020-11-16T20:39:19.973775Z',
+            'completed_at': '2020-11-16T20:39:22.855617Z',
+            'result': {
+                'problems': [{
+                    'name': 'CloudflareCDN',
+                    'explanation': "The domain jeffistotallyawesome.space is being \
 served through Cloudflare CDN. Any Let's Encrypt certificate installed on the origin server will only encrypt \
 traffic between the server and Cloudflare. It is strongly recommended that the SSL option 'Full SSL (strict)' \
-be enabled.", 'detail': 'https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-mean-',
-                                                         'severity': 'Warning'}]}}
+be enabled.",
+                    'detail':
+                    'https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-mean-',
+                    'severity': 'Warning'
+                }]
+            }
+        }
 
     def _mock_response(self, status=200, text=None, json_data=None):
         mock_resp = mock.Mock()

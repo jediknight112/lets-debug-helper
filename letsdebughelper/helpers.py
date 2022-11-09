@@ -23,8 +23,8 @@ class ValidateArgRegex():
 
     def __call__(self, value):
         if not self._pattern.match(value):
-            raise argparse.ArgumentTypeError(
-                "'{}' is not a valid argument - does not match {} pattern".format(value, self._argtype))
+            raise argparse.ArgumentTypeError("'{}' is not a valid argument - does not match {} pattern".format(
+                value, self._argtype))
         return value
 
 

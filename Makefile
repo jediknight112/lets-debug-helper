@@ -1,40 +1,51 @@
 WHL_VERSION ?= patch
-DOCKER_IMG ?= lets-debug:test
-docker_workdir = /workspace
 
-.PHONY: docker_build
-docker_build:  ## build docker image
-	docker build -t $(DOCKER_IMG) .
+help: ## display this help
+	@awk -F ':|##' \
+		'/^[^\t].+?:.*?##/ {printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF}' \
+		$(MAKEFILE_LIST)
+
+.PHONY: all
+all: build test shell
 
 .PHONY: check_env
 check_env:
 	@echo Checking environment ...
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry version
+	poetry check
 
 .PHONY: setup
 setup:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry update
+	poetry install
+
+.PHONY: format
+format:
+	poetry run yapf --style pyproject.toml --in-place --recursive letsdebughelper/*
 
 .PHONY: lint
 lint: setup
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run flake8 --verbose
+	poetry run flake8 --verbose letsdebughelper
 
 .PHONY: test
 test:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run pytest --verbose --color=yes letsdebughelper
+	poetry run pytest --verbose --color=yes letsdebughelper
 
 .PHONY: coverage
 coverage:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes
+	poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes letsdebughelper
 
 .PHONY: bump_py_version
 bump_py_version:
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry version $(WHL_VERSION)
+	poetry version $(WHL_VERSION)
 
 .PHONY: package
 package: bump_py_version
 	@echo Packaging application ...
-	docker run --rm -v $(PWD):/workspace $(DOCKER_IMG) poetry build
+	poetry build
+
+.PHONY: publish
+publish:
+	@echo Publishing application ...
+	poetry publish
 
 .PHONY: clean
 clean:

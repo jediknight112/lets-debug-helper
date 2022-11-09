@@ -1,16 +1,17 @@
-dist: bionic
+dist: jammy
 language: python
 python:
-  - "3.8"
   - "3.9"
+  - "3.10"
 before_install:
   - python --version
   - pip install -U pip
+  - pip install poetry
 install:
-  - pip install -r requirements.txt
+  - poetry install
 script:
-  - pipenv run flake8 --verbose
-  - pipenv run coverage run --include="letsdebughelper/*" --omit="/" -m pytest --verbose --color=yes
+  - poetry run flake8 --verbose letsdebughelper
+  - poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes letsdebughelper
 after_success:
-  - pipenv run coverage report -m --include="letsdebughelper/*"
-  - pipenv run coveralls
+  - poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes letsdebughelper
+  - poetry run pipenv run coveralls

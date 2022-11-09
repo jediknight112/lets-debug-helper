@@ -73,7 +73,8 @@ def format_problem_output(problems, domain):
         for problem in problems:
             print(Ctext.yellow('\nWarning Type:'), problem.get('name'))
             explanation = textwrap.wrap(Ctext.yellow(' Explanation: ') + problem.get('explanation'),
-                                        width=120, subsequent_indent="              ")
+                                        width=120,
+                                        subsequent_indent="              ")
             for line in explanation:
                 print(line)
             print(Ctext.yellow('     Details:'), problem.get('detail'))

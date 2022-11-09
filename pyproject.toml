@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lets-debug-helper"
-version = "1.0.7"
+version = "1.0.8"
 description = "This is a cli tool that interacts with the Let's Debug API"
 authors = ["Jeffrey Crane <jediknight11206@gmail.com>"]
 license = "License :: OSI Approved :: MIT License"
@@ -9,27 +9,30 @@ packages = [
     { include = "letsdebughelper" },
 ]
 
+[tool.yapf]
+based_on_style = "pep8"
+column_limit = 120
+
 [tool.poetry.scripts]
 lets-debug = "letsdebughelper.letsdebug:main"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 argparse = "^1.4.0"
 requests = "^2.27.1"
 six = "^1.16.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 mock = "^4.0.3"
 argparse = "^1.4.0"
 parameterized = "^0.8.1"
-flake8 = "^4.0.1"
+flake8 = "^5.0.4"
 coveralls = "^3.3.1"
 pytest = "^7.1.2"
-pytest-cov = "^3.0.0"
+pytest-cov = "^4.0.0"
+yapf = "^0.32.0"
+toml = "^0.10.2"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-testpaths = ["letsdebughelper/"]
