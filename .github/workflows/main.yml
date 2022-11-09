@@ -9,7 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build docker
+      - name: Install Poetry
+        run: |
+          pip install -U pip
+          pip install poetry
+
+      - name: Env Setup
         run: make setup
 
       - name: Check Env
