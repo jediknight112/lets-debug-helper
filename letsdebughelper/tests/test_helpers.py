@@ -4,7 +4,7 @@ import unittest
 
 from parameterized import parameterized
 
-from letsdebughelper.helpers import ValidateArgRegex, Ctext
+from letsdebughelper.helpers import ValidateArgRegex
 
 
 class TestHelpers(unittest.TestCase):
@@ -32,26 +32,3 @@ class TestHelpers(unittest.TestCase):
         domain = 'testdomainthatiswrong'
         with self.assertRaises(KeyError):
             ValidateArgRegex('wrong')(domain)
-
-    def test_get_color_invalid(self):
-        """An invalid color choice will raise an exception"""
-        with self.assertRaises(AttributeError) as context:
-            Ctext.FAKECOLOR('text')
-
-        self.assertIn('"FAKECOLOR" is not available', str(context.exception), 'Failed to catch the intended exception')
-
-    def test_set_custom_color(self):
-        """Ensure that a new custom color can be set"""
-        Ctext.custom = 'fake-color'
-        self.assertEqual(Ctext.colors['custom'], 'fake-color')
-
-    def test_color_returned(self):
-        """Ensure that the color + string + default are returned"""
-        expected = Ctext.colors['red'] + 'fake-string' + Ctext.colors['default']
-        self.assertEqual(expected, Ctext.red('fake-string'))
-
-    def test_custom_color_returned(self):
-        """Ensure that the new color is returned properly after being set"""
-        Ctext.colors['new-color'] = 'fake-color'
-        expected = Ctext.colors['new-color'] + 'fake-string' + Ctext.colors['default']
-        self.assertEqual(expected, Ctext['new-color']('fake-string'))

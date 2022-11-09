@@ -6,9 +6,11 @@ import textwrap
 from time import sleep
 
 import requests
+from rich.console import Console
 
-from letsdebughelper.helpers import ValidateArgRegex, Ctext
+from letsdebughelper.helpers import ValidateArgRegex
 
+console = Console(highlight=False)
 LE_API_URL = 'https://letsdebug.net'
 
 
@@ -50,38 +52,40 @@ def decode_result(result):
 
 
 def check_debug_test_status(test_id_url):
-    print(Ctext.blue('\nWaiting for test to complete....'))
+    console.print("\n[bold blue]Waiting for test to complete....[/]")
     check_result = le_get_call(test_id_url)
-    check_result_json = decode_result(check_result)
-    check_status(check_result, check_result_json)
-    while check_result_json.get('status') != 'Complete':
+    check_result_dict = decode_result(check_result)
+    status = check_result_dict.get('status')
+    check_status(check_result, check_result_dict)
+    while status != 'Complete':
         check_result = le_get_call(test_id_url)
-        check_result_json = decode_result(check_result)
-        check_status(check_result, check_result_json)
+        check_result_dict = decode_result(check_result)
+        status = check_result_dict.get('status')
+        check_status(check_result, check_result_dict)
         sleep(1)
-    return check_result_json
+    return check_result_dict
 
 
 def pre_result_output(domain, test_id, test_id_url):
-    print(Ctext.green('\nChecking Domain:'), domain)
-    print(Ctext.green('     Testing ID:'), test_id)
-    print(Ctext.green('            URL:'), test_id_url)
+    console.print(f"\n[bold green]Checking Domain:[/] {domain}")
+    console.print(f"[bold green]     Testing ID:[/] {test_id}")
+    console.print(f"[bold green]            URL:[/] {test_id_url}")
 
 
 def format_problem_output(problems, domain):
     if problems:
         for problem in problems:
-            print(Ctext.yellow('\nWarning Type:'), problem.get('name'))
-            explanation = textwrap.wrap(Ctext.yellow(' Explanation: ') + problem.get('explanation'),
+            console.print(f"\n[bold yellow]Warning Type:[/] {problem.get('name')}")
+            explanation = textwrap.wrap(f"[bold yellow] Explanation:[/] {problem.get('explanation')}",
                                         width=120,
                                         subsequent_indent="              ")
             for line in explanation:
-                print(line)
-            print(Ctext.yellow('     Details:'), problem.get('detail'))
-            print(Ctext.yellow('    Severity:'), problem.get('severity'))
+                console.print(line)
+            console.print(f"     [bold yellow]Details:[/] {problem.get('detail')}")
+            console.print(f"    [bold yellow]Severity:[/] {problem.get('severity')}")
         print()
     else:
-        print(Ctext.green('\nAll OK!'))
+        console.print("\n[bold green]All OK![/]")
         print('\nNo issues were found with {}. If you are having problems with creating an\n\
 SSL certificate, please visit the Let\'s Encrypt Community forums and post a question there.\n\
 https://community.letsencrypt.org/\n'.format(domain))
@@ -95,8 +99,8 @@ def main():
     check_status(result, result_json)
     test_id_url = '{}/{}/{}'.format(LE_API_URL, result_json.get('Domain'), result_json.get('ID'))
     pre_result_output(result_json.get('Domain'), result_json.get('ID'), test_id_url)
-    check_result_json = check_debug_test_status(test_id_url)
-    problems = check_result_json.get('result').get('problems')
+    check_result_dict = check_debug_test_status(test_id_url)
+    problems = check_result_dict.get('result').get('problems')
     format_problem_output(problems, args.domain)
 
 
