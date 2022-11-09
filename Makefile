@@ -31,7 +31,11 @@ test:
 
 .PHONY: coverage
 coverage:
-	poetry run pytest --cov-report term-missing:skip-covered --cov=letsdebughelper --verbose --color=yes letsdebughelper
+	poetry run pytest \
+	--cov-report lcov:coverage/lcov.info \
+	--cov-report term-missing:skip-covered \
+	--cov=letsdebughelper --verbose \
+	--color=yes letsdebughelper
 
 .PHONY: bump_py_version
 bump_py_version:

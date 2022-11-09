@@ -13,6 +13,9 @@ packages = [
 based_on_style = "pep8"
 column_limit = 120
 
+[tool.coverage.run]
+relative_files = true
+
 [tool.poetry.scripts]
 lets-debug = "letsdebughelper.letsdebug:main"
 
