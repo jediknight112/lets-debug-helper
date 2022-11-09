@@ -15,6 +15,8 @@ jobs:
           pip install poetry
 
       - name: Env Setup
+        env:
+          PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
         run: make setup
 
       - name: Check Env
