@@ -55,7 +55,7 @@ publish:
 clean:
 	@echo Cleaning environment ...
 	# may not be a venv to remove, but just keep going in that case
-	rm -rf *.egg-info build dist .coverage
+	rm -rf *.egg-info build dist .coverage coverage
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '.pytest_cache' -exec rm -rf {} +
