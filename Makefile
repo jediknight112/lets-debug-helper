@@ -47,7 +47,7 @@ package: bump_py_version
 	poetry build
 
 .PHONY: publish
-publish:
+publish: clean package
 	@echo Publishing application ...
 	poetry publish
 
