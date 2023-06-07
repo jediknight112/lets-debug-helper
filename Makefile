@@ -8,6 +8,9 @@ help: ## display this help
 .PHONY: all
 all: build test shell
 
+.PHONY: full-release
+full-release: package gh-release publish
+
 .PHONY: check_env
 check_env:
 	@echo Checking environment ...
@@ -42,14 +45,18 @@ bump_py_version:
 	poetry version $(WHL_VERSION)
 
 .PHONY: package
-package: bump_py_version
+package:
 	@echo Packaging application ...
 	poetry build
 
 .PHONY: publish
-publish: clean package
+publish:
 	@echo Publishing application ...
 	poetry publish
+
+.PHONY: gh-release
+gh-release:
+	sh ./scripts/make_gh_release.sh
 
 .PHONY: clean
 clean:
