@@ -9,7 +9,7 @@ help: ## display this help
 all: build test shell
 
 .PHONY: full-release
-full-release: package gh-release publish
+full-release: clean package gh-release publish
 
 .PHONY: check_env
 check_env:
