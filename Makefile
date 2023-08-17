@@ -28,6 +28,10 @@ format:
 lint: setup
 	poetry run flake8 --verbose letsdebughelper
 
+.PHONY: typing
+typing:
+	poetry run mypy . --ignore-missing-imports --check-untyped-defs --no-implicit-optional --strict
+
 .PHONY: test
 test:
 	poetry run pytest --verbose --color=yes letsdebughelper
