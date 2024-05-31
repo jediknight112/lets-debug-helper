@@ -1,0 +1,11 @@
+version: 2
+updates:
+
+  # Enable minor/patch version updates for go
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
