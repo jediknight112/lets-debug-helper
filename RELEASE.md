@@ -4,13 +4,15 @@ This repository uses GitHub Actions to automatically release new versions when c
 
 ## How It Works
 
-The release workflow (`.github/workflows/release.yml`) automatically:
+When you merge to `main`, the CI workflow runs first. After CI passes successfully, the release workflow (`.github/workflows/release.yml`) automatically:
 
 1. **Bumps the version** in `pyproject.toml` based on commit message keywords
 2. **Runs tests** to ensure quality
 3. **Builds the package** (creates wheel and tar.gz files)
 4. **Publishes to PyPI** using the configured API token
 5. **Creates a GitHub Release** with auto-generated release notes and attaches the build artifacts
+
+**Note:** The release only happens if the CI workflow completes successfully.
 
 ## Setup Requirements
 
@@ -68,10 +70,12 @@ git commit -m "docs: update README [skip release]"
 
 ## Workflow Triggers
 
-The release workflow runs on:
-- ✅ Pushes to `main` branch (typically from merged PRs)
-- ❌ Changes to documentation files (`.md`), `LICENSE`, or `.github/**` (except the release workflow itself)
-- ❌ Commits containing `[skip release]`
+The release workflow runs:
+- ✅ After the CI workflow (`main.yml`) completes successfully on the `main` branch
+- ❌ If CI workflow fails
+- ❌ If commits contain `[skip release]`
+
+This ensures that releases only happen when all tests pass.
 
 ## Manual Release Process (Legacy)
 

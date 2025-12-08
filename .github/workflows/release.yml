@@ -1,19 +1,19 @@
 name: Release
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
     branches: [ main ]
-    paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - '.github/**'
-      - '!.github/workflows/release.yml'
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    # Only run if the commit message doesn't contain [skip release]
-    if: "!contains(github.event.head_commit.message, '[skip release]')"
+    # Only run if CI passed and commit message doesn't contain [skip release]
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      !contains(github.event.workflow_run.head_commit.message, '[skip release]')
     
     permissions:
       contents: write
@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,7 +54,7 @@ jobs:
         id: bump_version
         run: |
           # Determine version bump type from commit message
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          COMMIT_MSG="${{ github.event.workflow_run.head_commit.message }}"
           
           if [[ "$COMMIT_MSG" =~ \[major\] ]]; then
             BUMP_TYPE="major"
