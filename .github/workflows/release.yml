@@ -39,7 +39,9 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Use AUTO_TOKEN (admin PAT) so the version-bump push can pass
+          # branch protection on main. GITHUB_TOKEN cannot bypass it.
+          token: ${{ secrets.AUTO_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
