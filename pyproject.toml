@@ -1,9 +1,28 @@
 [tool.poetry]
 name = "lets-debug-helper"
 version = "1.6.0"
-description = "This is a cli tool that interacts with the Let's Debug API"
-authors = ["Jeffrey Crane <jediknight11206@gmail.com>"]
-license = "License :: OSI Approved :: MIT License"
+description = "CLI wrapper around the Let's Debug API for diagnosing Let's Encrypt certificate issuance issues"
+authors = ["jediknight112 <17991353+jediknight112@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/jediknight112/lets-debug-helper"
+repository = "https://github.com/jediknight112/lets-debug-helper"
+documentation = "https://github.com/jediknight112/lets-debug-helper#readme"
+keywords = ["letsencrypt", "letsdebug", "ssl", "tls", "acme", "cli", "diagnostics"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Security",
+    "Topic :: System :: Networking",
+]
 include = ["README.md"]
 packages = [
     { include = "letsdebughelper" },
@@ -21,9 +40,7 @@ lets-debug = "letsdebughelper.letsdebug:main"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-argparse = "^1.4.0"
 requests = "^2.33.0"
-six = "^1.16.0"
 rich = "^13.7.0"
 
 [tool.poetry.group.lint.dependencies]
@@ -31,7 +48,6 @@ mypy = "^1.7.1"
 
 [tool.poetry.group.dev.dependencies]
 mock = "^5.1.0"
-argparse = "^1.4.0"
 parameterized = "^0.9.0"
 flake8 = "^6.1.0"
 coveralls = "^3.3.1"
