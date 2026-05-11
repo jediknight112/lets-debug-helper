@@ -1,11 +1,54 @@
 version: 2
 updates:
 
-  # Enable minor/patch version updates for go
+  # ---- Python dependencies ----
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      # Dev/lint/test minor+patch updates batch into one weekly PR.
+      # Dev majors fall outside this group and become individual PRs.
+      python-dev-deps:
+        applies-to: version-updates
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
     ignore:
+      # Runtime majors require manual code review.
       - dependency-name: "*"
-        update-types: [ "version-update:semver-major" ]
+        dependency-type: "production"
+        update-types:
+          - "version-update:semver-major"
+
+  # ---- GitHub Actions ----
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(actions)"
+    groups:
+      # Minor+patch action bumps batch together. Majors (e.g. Node runtime
+      # bumps like checkout v5->v6) come as individual PRs for review.
+      github-actions-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
