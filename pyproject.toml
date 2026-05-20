@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lets-debug-helper"
-version = "1.6.6"
+version = "1.6.7"
 description = "CLI wrapper around the Let's Debug API for diagnosing Let's Encrypt certificate issuance issues"
 authors = ["jediknight112 <17991353+jediknight112@users.noreply.github.com>"]
 license = "MIT"
